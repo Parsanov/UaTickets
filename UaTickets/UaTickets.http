@@ -1,0 +1,6 @@
+@UaTickets_HostAddress = http://localhost:5200
+
+GET {{UaTickets_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
