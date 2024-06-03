@@ -7,11 +7,8 @@ using UaTickets.Model;
 
 namespace Model.Interfaces
 {
-    public interface ITicketData
+    public interface ITicketsStone
     {
-        List<Ticket> GetAll();
-        void Add(List<Ticket> ticket);
-        void Remove(Ticket ticket);
-        bool Save();
+        List<Ticket> Tickets { get; set; }
     }
 }

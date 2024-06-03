@@ -1,4 +1,5 @@
 ﻿using UaTickets.Model;
+using UaTickets.ViewModel;
 
 namespace Model.Interfaces
 {
@@ -6,8 +7,10 @@ namespace Model.Interfaces
     {
         public List<Ticket> GetAllTicket();
         public Ticket GetTicket(int id);
-        public bool DeleteTicket(int id);
-        public void AddTicket(Ticket ticket);
+        public Ticket DeleteTicket(int id);
+        public List<Ticket> FindTickets(TicketVM ticket);
+      
+       
 
     }
 }

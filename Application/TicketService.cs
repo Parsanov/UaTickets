@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model.Interfaces;
 using UaTickets.Model;
+using UaTickets.ViewModel;
 
 namespace Application
 {
@@ -17,16 +19,21 @@ namespace Application
             _ticketData = ticketData;
         }
 
-        public void AddTicket(Ticket ticket)
-        {
-            _ticketData.Add(ticket);
-        }
-
-        public bool DeleteTicket(int id)
+        public Ticket DeleteTicket(int id)
         {
             var ticket = _ticketData.GetAll().FirstOrDefault(x => x.Id == id);
 
-            return ticket != null;  
+            return ticket;  
+        }
+
+        public List<Ticket> FindTickets(TicketVM ticket)
+        {
+            var ticketsData = _ticketData.GetAll();
+
+            var findTickets = ticketsData.Where(tic => tic.DepartureCity == ticket.DepartureCity && 
+                tic.ArrivalCity == ticket.ArrivalCity && tic.DepartureDate.Date == DateTime.Parse(ticket.DepartureDate).Date);
+
+            return findTickets.ToList();
         }
 
         public List<Ticket> GetAllTicket()
