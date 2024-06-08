@@ -14,9 +14,9 @@ namespace Persistence
             _dBContext = dBContext;
         }
 
-        public List<Ticket> GetAll()
+        public async Task<List<Ticket>> GetAll()
         {
-            return _dBContext.tickets.ToList(); 
+            return await _dBContext.tickets.ToListAsync(); 
         }
 
         public void Add(List<Ticket> ticket)

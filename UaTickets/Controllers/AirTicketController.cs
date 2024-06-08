@@ -17,25 +17,40 @@ namespace UaTicketsAPI.Controllers
         }
 
       
-        [HttpPost]
-        [Route("[action]")]
-        public IActionResult FindTicket([FromBody] TicketVM ticketVM) 
+        [HttpPost("FindTicket")]
+        public async Task<IActionResult> FindTicket([FromBody] TicketVM ticketVM) 
         {
             var tickets = _ticketService.FindTickets(ticketVM);
 
-            _stone.Tickets = tickets;
+            _stone.Tickets = await tickets;
 
             return Ok();
 
         }
 
 
-        [HttpGet]
-        [Route("[action]")]
+        [HttpGet("GetTikects")]
         public IActionResult GetTikects()
         {
             return Ok(_stone.Tickets);
         }
+
+
+
+        [HttpPost("AccountTickets")]
+        public async Task<IActionResult> AccountTickets(string id)
+        {
+            var findTicket = await _ticketService.TicketsAccountFind(id);
+
+            if (findTicket is null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(findTicket);
+        }
+
+
 
 
 

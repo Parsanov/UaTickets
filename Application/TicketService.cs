@@ -1,4 +1,5 @@
-﻿using Model.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
+using Model.Interfaces;
 using UaTickets.Model;
 using UaTickets.ViewModel;
 
@@ -13,16 +14,16 @@ namespace Application
             _ticketData = ticketData;
         }
 
-        public Ticket DeleteTicket(int id)
+        public async Task<Ticket> DeleteTicket(int id)
         {
-            var ticket = _ticketData.GetAll().FirstOrDefault(x => x.Id == id);
+            var ticket = await _ticketData.GetAll();
 
-            return ticket;  
+            return ticket.FirstOrDefault(x => x.Id == id);  
         }
 
-        public List<Ticket> FindTickets(TicketVM ticket)
+        public async Task<List<Ticket>> FindTickets(TicketVM ticket)
         {
-            var ticketsData = _ticketData.GetAll();
+            var ticketsData =  await _ticketData.GetAll();
 
             var findTickets = ticketsData.Where(tic => tic.DepartureCity == ticket.DepartureCity && 
                 tic.ArrivalCity == ticket.ArrivalCity && tic.DepartureDate.Date == DateTime.Parse(ticket.DepartureDate).Date);
@@ -30,14 +31,23 @@ namespace Application
             return findTickets.ToList();
         }
 
-        public List<Ticket> GetAllTicket()
+        public async Task<List<Ticket>> GetAllTicket()
         {
-           return _ticketData.GetAll();
+           return  await _ticketData.GetAll();
         }
 
-        public Ticket GetTicket(int id)
+        public async Task<Ticket> GetTicket(int id)
         {
-            return _ticketData.GetAll().FirstOrDefault(x => x.Id == id);
+            var find = await _ticketData.GetAll();
+            return  find.FirstOrDefault(x => x.Id == id);
+        }
+
+        public async Task<List<Ticket>> TicketsAccountFind(string idUser)
+        {
+            var allTickets =  await _ticketData.GetAll();
+
+            var findTicketUser =  allTickets.Where(t => t.UserId == idUser).ToList();
+            return findTicketUser;
         }
     }
 }

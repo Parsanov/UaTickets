@@ -9,7 +9,7 @@ namespace Model.Interfaces
 {
     public interface ITicketData
     {
-        List<Ticket> GetAll();
+        Task<List<Ticket>> GetAll();
         void Add(List<Ticket> ticket);
         void Remove(Ticket ticket);
         bool Save();

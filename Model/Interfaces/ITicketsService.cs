@@ -5,12 +5,11 @@ namespace Model.Interfaces
 {
     public interface ITiketService
     {
-        public List<Ticket> GetAllTicket();
-        public Ticket GetTicket(int id);
-        public Ticket DeleteTicket(int id);
-        public List<Ticket> FindTickets(TicketVM ticket);
-      
-       
+        public  Task<List<Ticket>> GetAllTicket();
+        public  Task<Ticket> GetTicket(int id);
+        public  Task<Ticket> DeleteTicket(int id);
+        public  Task<List<Ticket>> FindTickets(TicketVM ticket);
+        public  Task<List<Ticket>> TicketsAccountFind(string idUser);
 
     }
 }
