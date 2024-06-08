@@ -1,27 +1,25 @@
 using Application;
-using Karambolo.Extensions.Logging.File;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Model.Interfaces;
+using Model.Model;
 using Npgsql;
 using Persistence;
 using Persistence.Data;
+using System;
 using UaTicketsAPI.Controllers.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ITicketService, TicketService>();
+builder.Services.AddScoped<ITiketService, TicketService>();
 builder.Services.AddScoped<ITicketData, TicketData>();
+builder.Services.AddScoped<IDecodingToken, DecodingTokenService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddSingleton<ITicketsStone, TicketsStone>();
 
 builder.Services.AddCors(options =>
@@ -39,23 +37,45 @@ var connectionString = builder.Configuration.GetConnectionString("MyPostgreSQLCo
 builder.Services.AddDbContext<DataDBContext>(options =>
     options.UseNpgsql(connectionString, b => b.MigrationsAssembly("UaTicketsAPI")));
 
+
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredLength = 6;
+
+}).AddEntityFrameworkStores<DataDBContext>();
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme =
+    options.DefaultChallengeScheme =
+    options.DefaultForbidScheme =
+    options.DefaultScheme =
+    options.DefaultSignOutScheme =
+    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
+        )
+    };
+});
+
+
+
 var app = builder.Build();
 
-// Перевірка з'єднання з PostgreSQL при запуску
-using (var scope = app.Services.CreateScope())
-{
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    var dbContext = scope.ServiceProvider.GetRequiredService<DataDBContext>();
-    try
-    {
-        await dbContext.Database.OpenConnectionAsync();
-        logger.LogInformation("З'єднання з PostgreSQL встановлено.");
-    }
-    catch (NpgsqlException ex)
-    {
-        logger.LogError(ex, "Помилка підключення до PostgreSQL: {ErrorMessage}", ex.Message);
-    }
-}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -66,6 +86,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowSpecificOrigin");
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 app.Run();

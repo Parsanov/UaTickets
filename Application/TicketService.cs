@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Model.Interfaces;
+﻿using Model.Interfaces;
 using UaTickets.Model;
 using UaTickets.ViewModel;
 
 namespace Application
 {
-    public class TicketService : ITicketService
+    public class TicketService : ITiketService
     {
         private readonly ITicketData _ticketData;
 

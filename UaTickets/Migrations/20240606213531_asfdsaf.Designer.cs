@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UaTicketsAPI.Controllers.Data;
@@ -11,9 +12,11 @@ using UaTicketsAPI.Controllers.Data;
 namespace UaTicketsAPI.Migrations
 {
     [DbContext(typeof(DataDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240606213531_asfdsaf")]
+    partial class asfdsaf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,13 +53,13 @@ namespace UaTicketsAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c886ca6c-b29b-470a-9c1d-fb6f4eaaaa47",
+                            Id = "75abc864-d982-474b-b6a5-5fa96b1999ef",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "7477810f-86e0-4ece-9d60-3d03bc73fb8e",
+                            Id = "00a4b907-a1da-4bb9-9013-22452fa0b23e",
                             Name = "User",
                             NormalizedName = "USER"
                         });

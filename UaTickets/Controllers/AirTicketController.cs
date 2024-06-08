@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Model.Interfaces;
-using UaTickets.Model;
 using UaTickets.ViewModel;
 
 namespace UaTicketsAPI.Controllers
@@ -8,10 +7,10 @@ namespace UaTicketsAPI.Controllers
     [Route("[controller]")]
     public class AirTicketController : Controller
     {
-        private readonly ITicketService _ticketService;
+        private readonly ITiketService _ticketService;
         private readonly ITicketsStone _stone;  
 
-        public AirTicketController(ITicketService ticketService, ITicketsStone stone)
+        public AirTicketController(ITiketService ticketService, ITicketsStone stone)
         {
             _ticketService = ticketService;
             _stone = stone;

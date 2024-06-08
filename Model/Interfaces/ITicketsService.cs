@@ -3,7 +3,7 @@ using UaTickets.ViewModel;
 
 namespace Model.Interfaces
 {
-    public interface ITicketService
+    public interface ITiketService
     {
         public List<Ticket> GetAllTicket();
         public Ticket GetTicket(int id);

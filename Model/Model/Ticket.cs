@@ -11,5 +11,6 @@
         public decimal CostTickets { get; set; }
         public string ClassSeat { get; set; }
         public string AirCompanyUrlLogo { get; set; }
+        public string? UserId { get; set; }
     }
 }

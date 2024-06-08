@@ -1,22 +1,41 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using UaTickets.Model;
+using Model.Model;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace UaTicketsAPI.Controllers.Data
 {
-    public class DataDBContext : DbContext
+    public class DataDBContext : IdentityDbContext<AppUser>
     {
-
-        public DataDBContext(DbContextOptions<DataDBContext> options) : base(options) { }
-
-
         public DbSet<Ticket> tickets { get; set; }
 
+        public DataDBContext(DbContextOptions<DataDBContext> options)
+            : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // Додайте конфігурації для ваших моделей тут, якщо потрібно.
-        }
 
+            // Configure your identity roles
+            List<IdentityRole> roles = new List<IdentityRole>()
+            {
+                new IdentityRole
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
+                }
+            };
+
+            modelBuilder.Entity<IdentityRole>().HasData(roles);
+        }
     }
 }
