@@ -1,4 +1,5 @@
 ﻿using Model.Interfaces;
+using Model.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace Application
 {
     public class TicketsStone : ITicketsStone
     {
-        public List<Ticket> Tickets { get; set; } = new List<Ticket>();
+        public List<AirTicket> AirTickets { get; set; } = new List<AirTicket>();
+        public List<TrainTickets> TrainTickets { get; set; } = new List<TrainTickets>();
     }
 }

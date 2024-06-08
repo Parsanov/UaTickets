@@ -16,10 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ITiketService, TicketService>();
-builder.Services.AddScoped<ITicketData, TicketData>();
+builder.Services.AddScoped<IAirTiketService, TicketService>();
+builder.Services.AddScoped<IAirTicketData, AirTicketData>();
 builder.Services.AddScoped<IDecodingToken, DecodingTokenService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITrainTicketData, TrainTicketData>();
+builder.Services.AddScoped<ITrainTicketService, TrainTicketService>();
 builder.Services.AddSingleton<ITicketsStone, TicketsStone>();
 
 builder.Services.AddCors(options =>

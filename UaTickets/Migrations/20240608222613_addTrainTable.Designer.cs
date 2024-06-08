@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UaTicketsAPI.Controllers.Data;
@@ -11,9 +12,11 @@ using UaTicketsAPI.Controllers.Data;
 namespace UaTicketsAPI.Migrations
 {
     [DbContext(typeof(DataDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240608222613_addTrainTable")]
+    partial class addTrainTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,13 +53,13 @@ namespace UaTicketsAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a893da71-b148-468e-8685-22bd17f99d01",
+                            Id = "4251cb3c-b8e2-4a5c-b8a8-2adffc49444e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "67b4a3e5-d1eb-4443-a354-53b30c66841d",
+                            Id = "9725bdfc-401d-49d0-a9d4-e780094dc83c",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -240,6 +243,14 @@ namespace UaTicketsAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AirCompany")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AirCompanyUrlLogo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("ArrivalCity")
                         .IsRequired()
                         .HasColumnType("text");
@@ -260,14 +271,6 @@ namespace UaTicketsAPI.Migrations
 
                     b.Property<DateTime>("DepartureDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("TrainCompany")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("TrainCompanyUrlLogo")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");

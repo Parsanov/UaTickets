@@ -19,14 +19,14 @@ namespace Persistence.Data
                 serviceProvider.GetRequiredService<DbContextOptions<DataDBContext>>()))
             {
                 // Перевірка чи база даних вже заповнена
-                if (context.tickets.Any())
+                if (context.AirTickets.Any())
                 {
                     return;   // База даних вже заповнена
                 }
 
                 // Додавання початкових даних
-                context.tickets.AddRange(
-                    new Ticket
+                context.AirTickets.AddRange(
+                    new AirTicket
                     {
                         AirCompany = "Airline A",
                         DepartureCity = "City A",
@@ -36,7 +36,7 @@ namespace Persistence.Data
                         CostTickets = 200.50m,
                         ClassSeat = "Economy"
                     },
-                    new Ticket
+                    new AirTicket
                     {
                         AirCompany = "Airline B",
                         DepartureCity = "City C",

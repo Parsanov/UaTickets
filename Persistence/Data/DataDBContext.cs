@@ -9,7 +9,8 @@ namespace UaTicketsAPI.Controllers.Data
 {
     public class DataDBContext : IdentityDbContext<AppUser>
     {
-        public DbSet<Ticket> tickets { get; set; }
+        public DbSet<AirTicket> AirTickets { get; set; }
+        public DbSet<TrainTickets> TrainTickets { get; set; }
 
         public DataDBContext(DbContextOptions<DataDBContext> options)
             : base(options)

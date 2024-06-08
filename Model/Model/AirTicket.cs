@@ -1,6 +1,6 @@
 ﻿namespace UaTickets.Model
 {
-    public class Ticket
+    public class AirTicket
     {
         public int Id { get; set; }
         public string AirCompany { get; set; }

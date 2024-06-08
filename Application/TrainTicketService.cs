@@ -1,21 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Model.Dtos;
+﻿using Model.Dtos;
 using Model.Interfaces;
+using Model.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UaTickets.Model;
 using UaTickets.ViewModel;
 
 namespace Application
 {
-    public class TicketService : IAirTiketService
+    public class TrainTicketService : ITrainTicketService
     {
-        private readonly IAirTicketData _ticketData;
 
-        public TicketService(IAirTicketData ticketData)
+        private readonly ITrainTicketData _ticketData;
+
+        public TrainTicketService(ITrainTicketData ticketData)
         {
             _ticketData = ticketData;
         }
 
-      
         public bool BuyUserTicket(UserTicket buyUser)
         {
             return _ticketData.AddUserId(buyUser);
@@ -29,14 +34,14 @@ namespace Application
 
             var delete = _ticketData.Remove(findTicket);
 
-            return delete ? true : false;  
+            return delete ? true : false;
         }
 
-        public async Task<List<AirTicket>> DepartureFindTickets(TicketVM ticket)
+        public async Task<List<TrainTickets>> DepartureFindTickets(TicketVM ticket)
         {
-            var ticketsData =  await _ticketData.GetAll();
+            var ticketsData = await _ticketData.GetAll();
 
-            var findTickets = ticketsData.Where(tic => tic.DepartureCity == ticket.DepartureCity && 
+            var findTickets = ticketsData.Where(tic => tic.DepartureCity == ticket.DepartureCity &&
                 tic.ArrivalCity == ticket.ArrivalCity && tic.DepartureDate.Date == DateTime.Parse(ticket.DepartureDate).Date
                 );
 
@@ -45,7 +50,7 @@ namespace Application
             return filteredTickets.ToList();
         }
 
-        public async Task<List<AirTicket>> ArrivalFindTickets(TicketVM ticket)
+        public async Task<List<TrainTickets>> ArrivalFindTickets(TicketVM ticket)
         {
             var ticketsData = await _ticketData.GetAll();
 
@@ -59,22 +64,22 @@ namespace Application
         }
 
 
-        public async Task<List<AirTicket>> GetAllTicket()
+        public async Task<List<TrainTickets>> GetAllTicket()
         {
-           return  await _ticketData.GetAll();
+            return await _ticketData.GetAll();
         }
 
-        public async Task<AirTicket> GetTicket(int id)
+        public async Task<TrainTickets> GetTicket(int id)
         {
             var find = await _ticketData.GetAll();
             return find.FirstOrDefault(x => x.Id == id);
         }
 
-        public async Task<List<AirTicket>> TicketsAccountFind(string idUser)
+        public async Task<List<TrainTickets>> TicketsAccountFind(string idUser)
         {
-            var allTickets =  await _ticketData.GetAll();
+            var allTickets = await _ticketData.GetAll();
 
-            var findTicketUser =  allTickets.Where(t => t.UserId == idUser).ToList();
+            var findTicketUser = allTickets.Where(t => t.UserId == idUser).ToList();
             return findTicketUser;
         }
     }

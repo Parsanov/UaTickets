@@ -1,30 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Model.Dtos;
 using Model.Interfaces;
-using Newtonsoft.Json.Linq;
 using UaTickets.ViewModel;
 
 namespace UaTicketsAPI.Controllers
 {
     [Route("[controller]")]
-    public class AirTicketController : Controller
+    public class TrainTicketController : Controller
     {
-        private readonly IAirTiketService _ticketService;
+        private readonly ITrainTicketService _ticketService;
         private readonly ITicketsStone _stone;
 
-        public AirTicketController(IAirTiketService ticketService, ITicketsStone stone)
+        public TrainTicketController(ITrainTicketService ticketService, ITicketsStone stone)
         {
             _ticketService = ticketService;
             _stone = stone;
         }
 
-      
+
         [HttpPost("FindTicket")]
-        public async Task<IActionResult> FindTicket([FromBody] TicketVM ticketVM) 
+        public async Task<IActionResult> FindTicket([FromBody] TicketVM ticketVM)
         {
             var tickets = _ticketService.DepartureFindTickets(ticketVM);
 
-            _stone.AirTickets = await tickets;
+            _stone.TrainTickets = await tickets;
 
 
             return Ok();
@@ -35,7 +34,7 @@ namespace UaTicketsAPI.Controllers
         [HttpGet("GetTikects")]
         public IActionResult GetTikects()
         {
-            return Ok(_stone.AirTickets);
+            return Ok(_stone.TrainTickets);
         }
 
 
@@ -59,7 +58,7 @@ namespace UaTicketsAPI.Controllers
         [HttpPost("AccountTickets")]
         public async Task<IActionResult> AccountTickets([FromBody] FindUserId userId)
         {
-           
+
             var findTicket = await _ticketService.TicketsAccountFind(userId.userId);
 
             if (findTicket is null)
